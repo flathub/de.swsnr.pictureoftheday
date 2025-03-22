@@ -27,5 +27,7 @@ jobs:
           sign-commits: true
           title: Update manifest from swsnr/picture-of-the-day
           body: |
-            Manually triggered update from swsnr/picture-of-the-day
+            Update flatpak manifest from [swsnr/picture-of-the-day](https://github.com/swsnr/picture-of-the-day).
+
+            PR created by [sync workflow](https://github.com/flathub/de.swsnr.pictureoftheday/actions/workflows/sync.yaml)
           assignees: swsnr
