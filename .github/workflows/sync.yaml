@@ -1,0 +1,31 @@
+name: Sync
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    name: Sync from swsnr/picture-of-the-day
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: flathub
+      - uses: actions/checkout@v4
+        with:
+          repository: swsnr/picture-of-the-day
+          path: upstream
+          sparse-checkout: |
+            flatpak/
+      - run: cp -t flathub upstream/flatpak/de.swsnr.pictureoftheday.yaml
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          path: flathub
+          commit-message: "Update from swsnr/picture-of-the-day"
+          branch: swsnr/picture-of-the-day/update
+          delete-branch: true
+          base: master
+          sign-commits: true
+          title: Update manifest from swsnr/picture-of-the-day"
+          body: |
+            Manually triggered update from swsnr/picture-of-the-day
+          assignees: swsnr
