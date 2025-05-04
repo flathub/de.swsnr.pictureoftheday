@@ -12,7 +12,7 @@ jobs:
           path: flathub
       - uses: actions/checkout@v4
         with:
-          repository: swsnr/picture-of-the-day
+          repository: https://codeberg.org/swsnr/picture-of-the-day.git
           path: upstream
           sparse-checkout: |
             flatpak/
@@ -25,9 +25,9 @@ jobs:
           delete-branch: true
           base: master
           sign-commits: true
-          title: Update manifest from swsnr/picture-of-the-day
+          title: Update manifest from upstream
           body: |
-            Update flatpak manifest from [swsnr/picture-of-the-day](https://github.com/swsnr/picture-of-the-day).
+            Update flatpak manifest from [swsnr/picture-of-the-day](https://codeberg.org/swsnr/picture-of-the-day).
 
             PR created by [sync workflow](https://github.com/flathub/de.swsnr.pictureoftheday/actions/workflows/sync.yaml)
           assignees: swsnr
