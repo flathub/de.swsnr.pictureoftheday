@@ -8,18 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: flathub
-      - uses: actions/checkout@v4
-        with:
-          repository: https://codeberg.org/swsnr/picture-of-the-day.git
-          path: upstream
-          sparse-checkout: |
-            flatpak/
-      - run: cp -t flathub upstream/flatpak/de.swsnr.pictureoftheday.yaml
+      - run: "curl -sSfL https://codeberg.org/swsnr/picture-of-the-day/raw/branch/main/flatpak/de.swsnr.pictureoftheday.yaml > de.swsnr.pictureoftheday.yaml"
       - uses: peter-evans/create-pull-request@v7
         with:
-          path: flathub
           commit-message: "Update from swsnr/picture-of-the-day"
           branch: swsnr/picture-of-the-day/update
           delete-branch: true
