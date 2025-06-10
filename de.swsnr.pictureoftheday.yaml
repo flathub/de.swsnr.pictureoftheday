@@ -16,9 +16,6 @@ finish-args:
   - --system-talk-name=org.freedesktop.login1
 build-options:
   append-path: /usr/lib/sdk/rust-stable/bin
-  env:
-    # Tell build.rs not to regenerate the UI files from blueprint sources
-    SKIP_BLUEPRINT: "1"
 modules:
   # Install just for our build file
   - name: just
@@ -54,11 +51,11 @@ modules:
     sources:
       - type: git
         url: https://codeberg.org/swsnr/picture-of-the-day.git
-        tag: "v1.5.1"
-        commit: "b51eec525105a3e56f6a3a8aed83735ed39b38a2"
+        tag: "v1.6.0"
+        commit: "2c4cac98219f2c6a810dca53f78223dde52271b4"
       - de.swsnr.pictureoftheday.cargo-sources.json
     build-commands:
       - install -Dm644 cargo/config .cargo/config.toml
-      - just compile
+      - just APPID=de.swsnr.pictureoftheday compile
       - cargo build --frozen --release --verbose
-      - just DESTPREFIX=/app install
+      - just APPID=de.swsnr.pictureoftheday DESTPREFIX=/app install
