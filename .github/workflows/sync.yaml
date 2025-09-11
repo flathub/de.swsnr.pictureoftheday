@@ -7,19 +7,28 @@ jobs:
     name: Sync from swsnr/picture-of-the-day
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: "curl -sSfL https://codeberg.org/swsnr/picture-of-the-day/raw/branch/main/flatpak/de.swsnr.pictureoftheday.yaml > de.swsnr.pictureoftheday.yaml"
-      - run: "curl -sSfL https://codeberg.org/swsnr/picture-of-the-day/raw/branch/main/flatpak/de.swsnr.pictureoftheday.cargo-sources.json > de.swsnr.pictureoftheday.cargo-sources.json"
+      - uses: actions/checkout@v5
+        with:
+          path: flathub
+      - run: "git clone --depth 1 --single-branch --branch main --sparse https://codeberg.org/swsnr/picture-of-the-day.git"
+      - run: "git -C picture-of-the-day sparse-checkout add flatpak"
+      - run: "cp -t flathub picture-of-the-day/flatpak/de.swsnr.pictureoftheday.yaml picture-of-the-day/flatpak/de.swsnr.pictureoftheday.cargo-sources.json"
+      - run: 'echo short_ref="$(git -C picture-of-the-day rev-parse --short=7 HEAD)" commit_hash="$(git -C picture-of-the-day rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
+        id: revparse
       - uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "Update from swsnr/picture-of-the-day"
+          path: flathub
+          commit-message: |
+            Update from swsnr/picture-of-the-day@{{steps.revparse.outputs.short_ref}}
+
+            Update from https://codeberg.org/swsnr/picture-of-the-day/commit/{{steps.revparse.outputs.commit_hash}}
           branch: swsnr/picture-of-the-day/update
           delete-branch: true
           base: master
           sign-commits: true
           title: Update manifest from upstream
           body: |
-            Update flatpak manifest from [swsnr/picture-of-the-day](https://codeberg.org/swsnr/picture-of-the-day).
+            Update flatpak manifest from [swsnr/picture-of-the-day@{{steps.revparse.outputs.short_ref}}](https://codeberg.org/swsnr/picture-of-the-day/commit/{{steps.revparse.outputs.commit_hash}}).
 
             PR created by [sync workflow](https://github.com/flathub/de.swsnr.pictureoftheday/actions/workflows/sync.yaml)
           assignees: swsnr
