@@ -13,22 +13,24 @@ jobs:
       - run: "git clone --depth 1 --single-branch --branch main --sparse https://codeberg.org/swsnr/picture-of-the-day.git"
       - run: "git -C picture-of-the-day sparse-checkout add flatpak"
       - run: "cp -t flathub picture-of-the-day/flatpak/de.swsnr.pictureoftheday.yaml picture-of-the-day/flatpak/de.swsnr.pictureoftheday.cargo-sources.json"
-      - run: 'echo short_ref="$(git -C picture-of-the-day rev-parse --short=7 HEAD)" commit_hash="$(git -C picture-of-the-day rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
+      - run: 'echo short_ref="$(git -C picture-of-the-day rev-parse --short=7 HEAD)"'
+        id: revparse_short
+      - run: 'echo commit_hash="$(git -C picture-of-the-day rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
         id: revparse
       - uses: peter-evans/create-pull-request@v7
         with:
           path: flathub
           commit-message: |
-            Update from swsnr/picture-of-the-day@${{steps.revparse.outputs.short_ref}}
+            Update from swsnr/picture-of-the-day@${{steps.revparse_short.outputs.short_ref}}
 
             Update from https://codeberg.org/swsnr/picture-of-the-day/commit/${{steps.revparse.outputs.commit_hash}}
           branch: swsnr/picture-of-the-day/update
           delete-branch: true
           base: master
           sign-commits: true
-          title: Update manifest from upstream
+          title: Update manifest from swsnr/picture-of-the-day
           body: |
-            Update flatpak manifest from [swsnr/picture-of-the-day@${{steps.revparse.outputs.short_ref}}](https://codeberg.org/swsnr/picture-of-the-day/commit/${{steps.revparse.outputs.commit_hash}}).
+            Update flatpak manifest from [swsnr/picture-of-the-day@${{steps.revparse_short.outputs.short_ref}}](https://codeberg.org/swsnr/picture-of-the-day/commit/${{steps.revparse.outputs.commit_hash}}).
 
             PR created by [sync workflow](https://github.com/flathub/de.swsnr.pictureoftheday/actions/workflows/sync.yaml)
           assignees: swsnr
