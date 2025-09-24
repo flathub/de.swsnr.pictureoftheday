@@ -13,7 +13,7 @@ jobs:
       - run: "git clone --depth 1 --single-branch --branch main --sparse https://codeberg.org/swsnr/picture-of-the-day.git"
       - run: "git -C picture-of-the-day sparse-checkout add flatpak"
       - run: "cp -t flathub picture-of-the-day/flatpak/de.swsnr.pictureoftheday.yaml picture-of-the-day/flatpak/de.swsnr.pictureoftheday.cargo-sources.json"
-      - run: 'echo short_ref="$(git -C picture-of-the-day rev-parse --short=7 HEAD)"'
+      - run: 'echo short_ref="$(git -C picture-of-the-day rev-parse --short=7 HEAD)" >> "${GITHUB_OUTPUT}"'
         id: revparse_short
       - run: 'echo commit_hash="$(git -C picture-of-the-day rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
         id: revparse
