@@ -1,6 +1,6 @@
 id: de.swsnr.pictureoftheday
 runtime: org.gnome.Platform
-runtime-version: "49"
+runtime-version: "50"
 sdk: org.gnome.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
@@ -38,8 +38,8 @@ modules:
     sources:
       - type: git
         url: https://codeberg.org/swsnr/picture-of-the-day.git
-        tag: "v1.10.5"
-        commit: "4888bc2ff5f802c34eaaf2d7bdc69f6c57382479"
+        tag: "v1.11.0"
+        commit: "4cb970bb598a1e3a42967dd59d44f010875c48b5"
       - de.swsnr.pictureoftheday.cargo-sources.json
     build-commands:
       - install -Dm644 cargo/config .cargo/config.toml
